@@ -7,8 +7,7 @@ const app = express();
 
 var corsOptions = {
     origin:
-    "Aqui informamos quais urls permitimos que sejam conectadas ao nosso backend.",
-    "Quando tivermos um frontend, iremos alterar para a url do nosso frontend",
+    "Aqui informamos quais urls permitimos que sejam conectadas ao nosso backend. Quando tivermos um frontend, iremos alterar para a url do nosso frontend",
 };
 app.use(cors(corsOptions));
 //parser de requisições com content type - application/json

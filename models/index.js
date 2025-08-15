@@ -13,14 +13,11 @@ db.Sequelize = Sequelize;
 
 db.sequelize = sequelize;
 
-/*
-db.
-
-db.personagem = require("./personagem.js")(sequelize, Sequelize);
-db.atributo = require("./atributo.js")(sequelize, Sequelize);
+db.projeto = require("./projeto.js")(sequelize, Sequelize);
 db.usuario = require("./usuario.js")(sequelize, Sequelize);
+db.vaga = require("./vaga.js")(sequelize, Sequelize);
 
-
+/*
 //Relacionamento 1:1 entre Usuario e Loja
 db.personagem.hasOne(db.atributo);
 db.atributo.belongsTo(db.personagem);
