@@ -17,13 +17,11 @@ db.projeto = require("./projeto.js")(sequelize, Sequelize);
 db.usuario = require("./usuario.js")(sequelize, Sequelize);
 db.vaga = require("./vaga.js")(sequelize, Sequelize);
 
-/*
-//Relacionamento 1:1 entre Usuario e Loja
-db.personagem.hasOne(db.atributo);
-db.atributo.belongsTo(db.personagem);
+//Relacionamento 1:*
+db.usuario.hasMany(db.projeto);
+db.projeto.belongsToMany(db.usuario, "usuario_projeto");
 
-//Relacionamento 1:* entre Loja e Produto
-db.usuario.hasMany(db.personagem);
-db.personagem.belongsTo(db.usuario);
-*/
+db.projeto.hasMany(db.vaga, {foreignKey: {allowNull: false}});
+db.vaga.belongsTo(db.projeto);
+
 module.exports = db;

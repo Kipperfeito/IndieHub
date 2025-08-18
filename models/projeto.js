@@ -7,7 +7,7 @@ module.exports = (sequelize, Sequelize) => {
         projdatapublicacao: { type: Sequelize.DATEONLY },
         projestagioatual: { type: Sequelize.STRING },
         projmodelonegocio: { type: Sequelize.STRING },
-        projplataformaalvo: { type: Sequelize.STRING },
+        projplataforma: { type: Sequelize.STRING },
         projcolaboradores: { type: Sequelize.STRING },
       },
       { freezeTableName: true }
