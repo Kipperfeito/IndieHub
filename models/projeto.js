@@ -8,7 +8,7 @@ module.exports = (sequelize, Sequelize) => {
         projestagioatual: { type: Sequelize.STRING },
         projmodelonegocio: { type: Sequelize.STRING },
         projplataforma: { type: Sequelize.STRING },
-        projcolaboradores: { type: Sequelize.STRING },
+        ownerId: { type: Sequelize.INTEGER }
       },
       { freezeTableName: true }
     );

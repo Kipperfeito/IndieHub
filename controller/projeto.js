@@ -1,10 +1,11 @@
 const db = require("../models");
 const Projeto = db.projeto;
+const Usuario = db.usuario;
 const Op = db.Sequelize.Op;
 
 // Criar um novo projeto
 exports.create = (req, res) => {
-  if (!req.projtitulo) {
+  if (!req.projtitulo && !req.body.ownerId) {
     res.status(400).send({
       message: "Título é obrigatório"
     });
@@ -12,31 +13,36 @@ exports.create = (req, res) => {
   }
 
   const projeto = {
-    projtitulo: req.projtitulo,
-    projdesc: req.projdesc,
-    projdatapublicacao: req.projdatapublicacao,
-    projestagioatual: req.projestagioatual,
-    projmodelonegocio: req.projmodelonegocio,
-    projplataforma: req.projplataforma,
-    projcolaboradores: req.usuarioIds,
-    usuarioId: req.usuarioId
+    projtitulo: req.body.projtitulo,
+    projdesc: req.body.projdesc,
+    projdatapublicacao: req.body.projdatapublicacao,
+    projestagioatual: req.body.projestagioatual,
+    projmodelonegocio: req.body.projmodelonegocio,
+    projplataforma: req.body.projplataforma,
+    ownerId: req.body.usuarioId
   };
 
   Projeto.create(projeto)
-    .then((data) => res.send(data))
+    .then((novoProjeto) => {
+      if (req.body.colaboradores && req.body.colaboradores.length > 0) {
+        return novoProjeto.setColaboradores(req.body.colaboradores)
+          .then(() => res.send(novoProjeto));
+      }
+      res.send(novoProjeto)})
     .catch((err) => {
       res.status(500).send({
         message: err.message || "Erro ao criar projeto",
       });
     });
+    
 };
 
 // Buscar todos os projetos
 exports.findAll = (req, res) => {
   const nome = req.query.nome;
-  const condition = nome ? { projnome: { [Op.iLike]: `%${nome}%` } } : null;
+  const condition = nome ? { projtitulo: { [Op.iLike]: `%${nome}%` } } : null;
 
-  Projeto.findAll({ where: condition })
+  Projeto.findAll({ where: condition, include: [{model: Usuario, as: "owner"}, {model: Usuario, as: "colaboradores"}] })
     .then((data) => res.send(data))
     .catch((err) =>
       res.status(500).send({
@@ -49,7 +55,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Projeto.findByPk(id)
+  Projeto.findByPk(id, {include: [{model: Usuario, as: "owner"}, {model: Usuario, as: "colaboradores"}]})
     .then((data) => {
       if (data) {
         res.send(data);
@@ -68,9 +74,9 @@ exports.findOne = (req, res) => {
 
 // Atualizar um projeto por ID
 exports.update = (req, res) => {
-  const id = req.id;
+  const id = req.params.id;
 
-  Projeto.update(req.novoProjeto, {
+  Projeto.update(req.body, {
     where: { id: id },
   })
     .then((num) => {
