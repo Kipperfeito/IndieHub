@@ -18,17 +18,17 @@ db.usuario = require("./usuario.js")(sequelize, Sequelize);
 db.vaga = require("./vaga.js")(sequelize, Sequelize);
 
 //Relacionamento 1:*
-Usuario.hasMany(Projeto, { foreignKey: "ownerId", as: "projetos" });
-Projeto.belongsTo(Usuario, { foreignKey: "ownerId", as: "owner" });
+db.usuario.hasMany(db.projeto, { foreignKey: "ownerId", as: "projetos" });
+db.projeto.belongsTo(db.usuario, { foreignKey: "ownerId", as: "owner" });
 
 // Colaboradores (N:N)
-Projeto.belongsToMany(Usuario, {
+db.projeto.belongsToMany(db.usuario, {
   through: "usuario_projeto",
   foreignKey: "projetoId",
   otherKey: "usuarioId",
   as: "colaboradores"
 });
-Usuario.belongsToMany(Projeto, {
+db.usuario.belongsToMany(db.projeto, {
   through: "usuario_projeto",
   foreignKey: "usuarioId",
   otherKey: "projetoId",

@@ -30,6 +30,10 @@ app.get("/", function (req, res) {
     res.send("Desenvolvimento do TCC");
 });
 
+require("./routes/usuario" )(app);
+require("./routes/projeto" )(app);
+require("./routes/vaga" )(app);
+
 app.listen(8000, function (req, res) {
     console.log("App rodando na porta 8000");
 });
