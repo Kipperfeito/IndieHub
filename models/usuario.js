@@ -11,7 +11,7 @@ module.exports = (sequelize, Sequelize) => {
         usuproficiencia: { type: Sequelize.STRING },
         usudisponibilidade: { type: Sequelize.STRING },
         usuportifolio: { type: Sequelize.STRING },
-        usufoto: {type: Sequelize.BLOB}
+        usufoto: {type: Sequelize.STRING}
       },
       { freezeTableName: true }
     );
