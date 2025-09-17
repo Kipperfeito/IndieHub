@@ -13,13 +13,14 @@ exports.create = (req, res) => {
     });
     return;
   }
+  var tags = req.body.usutags.toString();
   const usuario = {
     usunome: req.body.usunome,
     usuemail: req.body.usuemail,
     usudatanascimento: req.body.usudatanascimento,
     ususenha: bcrypt.hashSync(req.body.ususenha, 10),
     usutipo: req.body.usutipo || "noDev", 
-    usutags: req.body.usutags || null,
+    usutags: tags,
     usuproficiencia: req.body.usuproficiencia,
     usudisponibilidade: req.body.usudisponibilidade || null,
     usuportifolio: req.body.usuportifolio || null,
@@ -96,7 +97,9 @@ exports.findOne = (req, res) => {
 // Atualizar um usuário
 exports.update = (req, res) => {
   const id = req.params.id;
-
+  if (req.body.ususenha != null) {
+    req.body.ususenha = bcrypt.hashSync(req.body.ususenha, 10)
+  }
   Usuario.update(req.body, {
     where: { id: id },
   })

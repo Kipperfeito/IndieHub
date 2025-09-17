@@ -5,7 +5,7 @@ const Op = db.Sequelize.Op;
 
 // Criar um novo projeto
 exports.create = (req, res) => {
-  if (!req.projtitulo && !req.body.ownerId) {
+  if (!req.body.projtitulo && !req.body.ownerId) {
     res.status(400).send({
       message: "Título é obrigatório"
     });
@@ -19,7 +19,7 @@ exports.create = (req, res) => {
     projestagioatual: req.body.projestagioatual,
     projmodelonegocio: req.body.projmodelonegocio,
     projplataforma: req.body.projplataforma,
-    ownerId: req.body.usuarioId
+    ownerId: req.body.ownerId
   };
 
   Projeto.create(projeto)

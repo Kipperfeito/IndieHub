@@ -4,7 +4,7 @@ const Op = db.Sequelize.Op;
 
 // Criar uma nova vaga
 exports.create = (req, res) => {
-  if (!req.vagatitulo) {
+  if (!req.body.vagatitulo) {
     res.status(400).send({
       message: "Título é obrigatório"
     });
@@ -15,10 +15,11 @@ exports.create = (req, res) => {
     vagatitulo: req.body.vagatitulo,
     vagadesc: req.body.vagadesc,
     vagarequisitos: req.body.vagarequisitos,
-    vagastatus: req.body.vagastatus
+    vagastatus: req.body.vagastatus,
+    projetoId: req.body.projetoId
   };
 
-  Usuario.create(vaga)
+  Vaga.create(vaga)
     .then((data) => res.send(data))
     .catch((err) => {
       res.status(500).send({
@@ -32,7 +33,7 @@ exports.findAll = (req, res) => {
   const nome = req.query.nome;
   const condition = nome ? { vagatitulo: { [Op.iLike]: `%${nome}%` } } : null;
 
-  Projeto.findAll({ where: condition })
+  Vaga.findAll({ where: condition })
     .then((data) => res.send(data))
     .catch((err) =>
       res.status(500).send({
@@ -45,7 +46,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Projeto.findByPk(id)
+  Vaga.findByPk(id)
     .then((data) => {
       if (data) {
         res.send(data);
@@ -66,7 +67,7 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  Projeto.update(req.body, {
+  Vaga.update(req.body, {
     where: { id: id },
   })
     .then((num) => {
@@ -89,7 +90,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  Projeto.destroy({ where: { id: id } })
+  Vaga.destroy({ where: { id: id } })
     .then((num) => {
       if (num == 1) {
         res.send({ message: "Vaga deletada com sucesso!" });
@@ -108,7 +109,7 @@ exports.delete = (req, res) => {
 
 // Deletar todos os projetos
 exports.deleteAll = (req, res) => {
-  Projeto.destroy({
+  Vaga.destroy({
     where: {},
     truncate: false,
   })
